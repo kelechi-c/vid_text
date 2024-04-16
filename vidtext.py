@@ -1,11 +1,16 @@
 import streamlit as st
-from transformers import pipeline, AutoModelForCausalLM, AutoTokenizer, AutoModelForSeq2SeqLM, AutoModelForSpeechSeq2Seq
+from transformers import pipeline
 from pytube import YouTube
 from pydub import AudioSegment
 from audio_extract import extract_audio
-from tqdm import tqdm
+import google.generativeai as google_genai
 import os
+from dotenv import load_dotenv
 
+load_dotenv()
+
+GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
+google_genai.configure(api_key=GOOGLE_API_KEY)
 
 st.set_page_config(
     page_title="VidText"
@@ -46,20 +51,28 @@ def transcribe_video(processed_audio):
     text_extract = transcriber_model(processed_audio)
     return text_extract['text']
 
-
+def generate_ai_summary(transcript):
+    model = google_genai.GenerativeModel('gemini-pro')
+    model_response = model.generate_content([f"Give a summary of the text {transcript}"], stream=True)
+    return model_response.text
 # Streamlit UI
 
-url_input_tab, file_select_tab, audio_file_tab = st.tabs(["Youtube url", "Video file", "Audio file"])
+youtube_url_tab, file_select_tab, audio_file_tab = st.tabs(
+    ["Youtube url", "Video file", "Audio file"]
+)
 
-# with url_input_tab:video_path
-#     url = st.text_input("Enter the Youtube url")
-#     yt_video, title = youtube_video_downloader(url)
-#     if yt_video:
-#         if st.button("Transcribe"):
-#             with st.spinner("Transcribing..."):
-#                 ytvideo_transcript = transcribe(yt_video)
-#             st.success(f"Transcription successful")
-#             st.write(ytvideo_transcript)
+with youtube_url_tab:
+    url = st.text_input("Enter the Youtube url")
+    yt_video, title = youtube_video_downloader(url)
+    if yt_video:
+        if st.button("Transcribe"):
+            with st.spinner("Transcribing..."):
+                ytvideo_transcript = transcribe_video(yt_video)
+            st.success(f"Transcription successful")
+            st.write(ytvideo_transcript)
+            if st.button("Generate Summary"):
+                summary = generate_ai_summary(ytvideo_transcript)
+                st.write(summary)
 
 
 # Video file transcription
@@ -74,6 +87,9 @@ with file_select_tab:
                 video_transcript = transcribe_video(audio) 
                 st.success(f"Transcription successful")
                 st.write(video_transcript)
+                if st.button("Generate Summary"):
+                    summary = generate_ai_summary(video_transcript)
+                    st.write(summary)
 
 
 # Audio transcription
@@ -89,3 +105,6 @@ with audio_file_tab:
                 st.write(audio_transcript)
 
 
+                if st.button("Generate Summary"):
+                    summary = generate_ai_summary(audio_transcript)
+                    st.write(summary)
