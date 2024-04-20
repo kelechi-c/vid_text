@@ -75,26 +75,26 @@ def generate_ai_summary(transcript):
 
 # Streamlit UI
 
-file_select_tab, audio_file_tab = st.tabs(["Video file", "Audio file"])
+youtube_url_tab, file_select_tab, audio_file_tab = st.tabs(
+    ["Youtube URL", "Video file", "Audio file"]
+)
 
-# with youtube_url_tab:
-#     url = st.text_input("Enter the Youtube url")
+with youtube_url_tab:
+    url = st.text_input("Enter the Youtube url")
 
+    yt_video, title = youtube_video_downloader(url)
+    if url:
+        if st.button("Transcribe", key="yturl"):
+            with st.spinner("Transcribing..."):
+                audio = audio_extraction(yt_video)
+                ytvideo_transcript = transcriber_pass(audio)
+            st.success(f"Transcription successful")
+            st.write(ytvideo_transcript)
+            # st.write(f'Completed in {run_time}')
 
-#     yt_video, title = youtube_video_downloader(url)
-#     if url:
-#        if st.button("Transcribe", key="yturl"):
-#            with st.spinner("Transcribing..."):
-#                audio = audio_extraction(yt_video, "mp3")
-#                audio = audio_processing(audio)
-#                ytvideo_transcript = transcriber_pass(audio)
-#            st.success(f"Transcription successful")
-#            st.write(ytvideo_transcript)
-#            # st.write(f'Completed in {run_time}')
-
-#            if st.button("Generate Summary"):
-#               summary = generate_ai_summary(ytvideo_transcript)
-#               st.write(summary)
+            if st.button("Generate Summary"):
+                summary = generate_ai_summary(ytvideo_transcript)
+                st.write(summary)
 
 
 # Video file transcription
