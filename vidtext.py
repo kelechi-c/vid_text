@@ -20,6 +20,10 @@ st.set_page_config(
     page_title="VidText"
 )
 
+st.title('VIdtext_whisper')
+st.header('Streamlit UI for custom Gemini API')
+
+
 def youtube_video_downloader(url):
     yt_vid = YouTube(url)
 
@@ -52,7 +56,7 @@ def audio_processing(mp3_audio):
 
 @st.cache_resource
 def load_asr_model():
-    asr_model = pipeline(task="automatic-speech-recognition", model="distil-whisper/distil-large-v3")
+    asr_model = pipeline(task="automatic-speech-recognition", model="openai/whisper-small")
     return asr_model
 
 transcriber_model = load_asr_model()
@@ -87,15 +91,22 @@ with youtube_url_tab:
                st.success(f"Transcription successful")
                st.write(f'Video title: {title}')
                st.write('___')
-               st.write(ytvideo_transcript)
-               # st.write(f'Completed in {run_time}')
+               # st.write(ytvideo_transcript)
+               st.markdown(f'''
+                          <div style="background-color: black; color: white; font-weight: bold; padding: 1rem; border-radius: 10px;">
+                             <p> -> {ytvideo_transcript}</p>
+                            </div>
+                            ''',
+                    unsafe_allow_html=True)
                
                if st.button("Generate Summary"):
                   summary = generate_ai_summary(ytvideo_transcript)
                   st.write(summary)
+                   
     except Exception as e:
         st.error(e)
 
+        
 # Video file transcription
 
 with file_select_tab:
@@ -110,7 +121,12 @@ with file_select_tab:
                     
                     video_transcript = transcriber_pass(audio)
                     st.success(f"Transcription successful")
-                    st.write(video_transcript)
+                    st.markdown(f'''
+                          <div style="background-color: black; color: white; font-weight: bold; padding: 1rem; border-radius: 10px;">
+                             <p> -> {video_transcript}</p>
+                            </div>
+                            ''',
+                    unsafe_allow_html=True)
                    
                     if st.button("Generate Summary", key="ti2"):
                         summary = generate_ai_summary(video_transcript)
@@ -131,8 +147,13 @@ with audio_file_tab:
                     processed_audio = audio_processing(audio_file)
                     audio_transcript = transcriber_pass(processed_audio)
                     st.success(f"Transcription successful")
-                    st.write(audio_transcript)
-    
+                    # st.write(audio_transcript)
+                    st.markdown(f'''
+                          <div style="background-color: black; color: white; font-weight: bold; padding: 1rem; border-radius: 10px;">
+                             <p> -> {audio_transcript}</p>
+                            </div>
+                            ''',
+                    unsafe_allow_html=True)
     
                     if st.button("Generate Summary", key="ti1"):
                         summary = generate_ai_summary(audio_transcript)
@@ -140,4 +161,19 @@ with audio_file_tab:
 
     except Exception as e:
         st.error(e)
-        
+
+
+# Footer
+st.write('')
+st.write('')
+st.write('')
+
+st.markdown("""
+    <div style="text-align: center; padding: 1rem;">
+        Project by <a href="https://github.com/kelechi-c" target="_blank" style="color: white; font-weight: bold; text-decoration: none;">
+         tensor_kelechi</a>
+    </div>
+""",
+unsafe_allow_html=True)
+
+# Arigato :)
