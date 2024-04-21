@@ -3,12 +3,10 @@ import time
 from transformers import pipeline
 from pytube import YouTube
 from pydub import AudioSegment
-from audio_extract import extract_audio
 import google.generativeai as google_genai
 
 import os
 from dotenv import load_dotenv
-
 
 
 load_dotenv()
@@ -20,7 +18,7 @@ st.set_page_config(
     page_title="VidText"
 )
 
-st.title('VIdtext_whisper')
+st.title('Vidtext_whisper')
 st.header('Streamlit UI for custom Gemini API')
 
 
@@ -44,8 +42,7 @@ def audio_extraction(video_file):
     audio.export(audio_path, format="wav")
 
     return audio_path
-    
-  
+
 
 def audio_processing(mp3_audio):
     audio = AudioSegment.from_file(mp3_audio, format="mp3")
@@ -56,7 +53,9 @@ def audio_processing(mp3_audio):
 
 @st.cache_resource
 def load_asr_model():
-    asr_model = pipeline(task="automatic-speech-recognition", model="openai/whisper-small")
+    asr_model = pipeline(
+        task="automatic-speech-recognition", model="distil-whisper/distil-large-v3"
+    )
     return asr_model
 
 transcriber_model = load_asr_model()
@@ -70,7 +69,6 @@ def generate_ai_summary(transcript):
     model_response = model.generate_content([f"Give a summary of the text {transcript}"], stream=True)
     return model_response.text
 
-    
 
 # Streamlit UI
 
@@ -106,7 +104,7 @@ with youtube_url_tab:
     except Exception as e:
         st.error(e)
 
-        
+
 # Video file transcription
 
 with file_select_tab:
@@ -134,8 +132,8 @@ with file_select_tab:
 
     except Exception as e:
         st.error(e)
-        
-        
+
+
 # Audio transcription
 with audio_file_tab:
     audio_file = st.file_uploader("Upload audio file", type="mp3")  
