@@ -52,14 +52,13 @@ def audio_processing(mp3_audio):
 
 @st.cache_resource
 def load_asr_model():
-    asr_model = pipeline(
-        task="automatic-speech-recognition", model="distil-whisper/distil-large-v3"
-    )
+    asr_model = pipeline(task="automatic-speech-recognition", model="distil-whisper/distil-large-v3")
     return asr_model
 
 
+transcriber_model = load_asr_model()
+
 def transcriber_pass(processed_audio):
-    transcriber_model = load_asr_model()
     
     text_extract = transcriber_model(processed_audio)
     return text_extract['text']
