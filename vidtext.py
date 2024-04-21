@@ -1,10 +1,9 @@
 import streamlit as st
-import time
+import ffmpeg
 from transformers import pipeline
 from pytube import YouTube
 from pydub import AudioSegment
 import google.generativeai as google_genai
-
 import os
 from dotenv import load_dotenv
 
@@ -58,9 +57,10 @@ def load_asr_model():
     )
     return asr_model
 
-transcriber_model = load_asr_model()
 
 def transcriber_pass(processed_audio):
+    transcriber_model = load_asr_model()
+    
     text_extract = transcriber_model(processed_audio)
     return text_extract['text']
 
