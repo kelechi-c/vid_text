@@ -3,15 +3,7 @@ import ffmpeg
 from transformers import pipeline
 from pytube import YouTube
 from pydub import AudioSegment
-import google.generativeai as google_genai
-import os
-from dotenv import load_dotenv
 
-
-load_dotenv()
-
-GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
-google_genai.configure(api_key=GOOGLE_API_KEY)
 
 st.set_page_config(
     page_title="VidText"
@@ -52,7 +44,7 @@ def audio_processing(mp3_audio):
 
 @st.cache_resource
 def load_asr_model():
-    asr_model = pipeline(task="automatic-speech-recognition", model="distil-whisper/distil-large-v3")
+    asr_model = pipeline(task="automatic-speech-recognition", model="openai/whisper-small")
     return asr_model
 
 
@@ -63,10 +55,6 @@ def transcriber_pass(processed_audio):
     text_extract = transcriber_model(processed_audio)
     return text_extract['text']
 
-def generate_ai_summary(transcript):
-    model = google_genai.GenerativeModel('gemini-pro')
-    model_response = model.generate_content([f"Give a summary of the text {transcript}"], stream=True)
-    return model_response.text
 
 
 # Streamlit UI
@@ -96,9 +84,6 @@ with youtube_url_tab:
                             ''',
                     unsafe_allow_html=True)
                
-               if st.button("Generate Summary"):
-                  summary = generate_ai_summary(ytvideo_transcript)
-                  st.write(summary)
                    
     except Exception as e:
         st.error(e)
@@ -125,10 +110,7 @@ with file_select_tab:
                             ''',
                     unsafe_allow_html=True)
                    
-                    if st.button("Generate Summary", key="ti2"):
-                        summary = generate_ai_summary(video_transcript)
-                        st.write(summary)
-
+                    
     except Exception as e:
         st.error(e)
 
@@ -152,9 +134,7 @@ with audio_file_tab:
                             ''',
                     unsafe_allow_html=True)
     
-                    if st.button("Generate Summary", key="ti1"):
-                        summary = generate_ai_summary(audio_transcript)
-                        st.write(summary)
+
 
     except Exception as e:
         st.error(e)
