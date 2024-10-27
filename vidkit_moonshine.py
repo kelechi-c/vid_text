@@ -11,14 +11,13 @@ st.set_page_config(page_title="vidkit_v2")
 
 st.title("vidkit")
 st.write("App for video/audio transcription(Youtube, mp4, mp3). Uses the Moonshine ASR model")
-st.write("[built to solve a personal problem, might be useful to others too :)]")
+st.write("built to solve a personal problem, might be useful to others too :)")
 
 
 def youtube_video_downloader(url: str):
     
     yt_vid = YouTube(url)
 
-    title = yt_vid.title
     vid_dld = (
         yt_vid.streams.filter(progressive=True, file_extension="mp4")
         .order_by("resolution")
@@ -26,6 +25,7 @@ def youtube_video_downloader(url: str):
         .first()
     )
     vid_dld = vid_dld.download()
+    title = yt_vid.title
     
     return vid_dld, title
 

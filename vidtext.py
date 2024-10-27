@@ -16,7 +16,6 @@ st.header('Streamlit UI for custom Gemini API')
 def youtube_video_downloader(url):
     yt_vid = YouTube(url)
 
-    title = yt_vid.title
     vid_dld = (
         yt_vid.streams.filter(progressive=True, file_extension="mp4")
         .order_by("resolution")
@@ -24,6 +23,8 @@ def youtube_video_downloader(url):
         .first()    
     )
     vid_dld = vid_dld.download()
+    title = yt_vid.title
+    
     return vid_dld, title
 
 
