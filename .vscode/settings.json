@@ -69,5 +69,6 @@
     "/usr/bin/python3",
     "/bin/python3.8",
     "/usr/bin/python3.8"
-  ]
+  ],
+  "python.REPL.enableREPLSmartSend": false
 }
