@@ -6,15 +6,8 @@ So I built this, an open-source AI project for transcribing video and audio file
 It utilizes a pretrained ASR(Automatic Speech Recognition) model from the Huggingface transformers library, Streamlit for the web UI, and other python libraries for audio processing and model loading.
 
 **[27-10-24]** ->  I rewrote the entire thing, with extra features,
- and a faster model (Moonshine with a JAX backend)
+ and a faster model (Moonshine-base with a JAX backend)
 
 **NB**: Larger files and longer videos take a longer time to transcribe...(of course)
 
-Check it out => **[vidkit]('https://huggingface.co/spaces/tensorkelechi/vidtext)** on **HuggingFace spaces**
-
-### Sample screenshots
-For youtube links
-![youtube transcription](vidtext_sample_ytvideo.png)
-
-For file uploads
-![How word vectors encode meaning](vidtext_sample.png)
+Check it out => **[**vidkit**](https://huggingface.co/spaces/tensorkelechi/vidkitv2)** on **HuggingFace spaces**
