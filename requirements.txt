@@ -2,5 +2,7 @@ ffmpeg
 pytube
 streamlit
 pydub
-useful-moonshine
+useful-moonshine[jax]
+tensorflow
 jax
+torch

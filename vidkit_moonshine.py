@@ -45,30 +45,14 @@ def audio_processing(mp3_audio):
     return wav_file
 
 
-# @st.cache_resource
-# def load_asr_model():
-#     stime = time.time()
-
-#     asr_model = pipeline(
-#         task="automatic-speech-recognition", model=""
-#     )
-
-#     time_taken = time.time() - stime
-#     st.success(f"ASR model loaded in {time_taken}s")
-
-#     return asr_model
-
-# transcriber_model = load_asr_model()
-
-
 def transcriber_pass(processed_audio):
     stime = time.time()
     
     # transcribe with moonshine
-    text_extract = moonshine.transcribe(processed_audio, "moonshine/tiny")
+    text_extract = moonshine.transcribe(processed_audio, "moonshine/base")
     
     time_taken = time.time() - stime
-    st.write(f'transcribed in {time_taken}s')
+    st.write(f'transcribed in {time_taken:.2f}s')
     
     return text_extract[0]
 
