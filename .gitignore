@@ -1,3 +1,4 @@
 .vidtext_env
 .env
 test.ipynb
+.streamlit/config.toml
