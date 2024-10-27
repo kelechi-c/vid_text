@@ -1,18 +1,16 @@
-# Vidtext
+## vidkit-v2 (formerly VidText)
 
 ### Description
-An AI project/web app for transcribing video and audio files, even youtube videos (using video link). It utilizes a pretrained ASR(Automatic Speech Recognition) model, Whisper(by OpenAI), Streamlit for the web UI, and other python libraries for audio processing and model loading. 
+I am not usually chanced enough to listen to/watch long video/audio files :).
+So I built this, an open-source AI project for transcribing video and audio files, even youtube videos (from the link). 
+It utilizes a pretrained ASR(Automatic Speech Recognition) model from the Huggingface transformers library, Streamlit for the web UI, and other python libraries for audio processing and model loading.
 
-**NB**: Larger files and videos take a longer time to transcribe
+**[27-10-24]** ->  I rewrote the entire thing, with extra features,
+ and a faster model (Moonshine with a JAX backend)
 
-### Dependencies/Libraries
-* **Pytorch** (Deep learning)
-* **Ffmpeg** (Audio/video encoding)
-* **Pydub** (audio processing)
-* **Pytube** (Youtube library)
-* **Transformers** (model loading)
+**NB**: Larger files and longer videos take a longer time to transcribe...(of course)
 
-Check it out => **[Vidtext]('https://huggingface.co/spaces/tensorkelechi/vidtext?logs=container)** on **HuggingFace**
+Check it out => **[vidkit]('https://huggingface.co/spaces/tensorkelechi/vidtext)** on **HuggingFace spaces**
 
 ### Sample screenshots
 For youtube links
